@@ -1,0 +1,83 @@
+- id: era5land_soil_moisture_daily
+  name: Volumetric soil water, top layer (ERA5-Land)
+  short_name: Soil moisture
+  description: Daily mean volume of water in the top 7 cm of soil at 9 km, worldwide, from 1950 to a few
+    days ago, as a fraction of the soil volume. Days run in the instance's own time zone.
+  standard_name: volume_fraction_of_condensed_water_in_soil
+  variable: swvl1
+  period_type: daily
+  sync:
+    kind: temporal
+    execution: append
+  extents:
+    spatial:
+      bbox:
+      - -180
+      - -90
+      - 180
+      - 90
+    temporal:
+      begin: '1950-01-01'
+      resolution: P1D
+  ingestion:
+    plugin: open_geo_service_plugins.rasters.era5_land_daily_stats.ERA5LandCDSDailyStatisticPlugin
+    params:
+      variable: swvl1
+      statistic: mean
+  units: m3 m-3
+  cell_methods: 'time: mean'
+  resolution: 9 km x 9 km
+  source: ERA5-Land Reanalysis
+  source_url: https://cds.climate.copernicus.eu/datasets/derived-era5-land-daily-statistics
+  license:
+    name: Licence to Use Copernicus Products
+    url: https://apps.ecmwf.int/datasets/licences/copernicus/
+  providers:
+  - name: Copernicus Climate Change Service (C3S)
+    url: https://climate.copernicus.eu/
+  display:
+    colormap: blues
+    range:
+    - 0.0
+    - 0.5
+
+- id: era5land_wind_speed_daily
+  name: 10m wind speed (ERA5-Land)
+  short_name: Wind speed
+  description: Daily mean wind speed 10 m above the ground at 9 km, worldwide, from 1950 to a few days
+    ago, computed from hourly wind components. Days run in the instance's own time zone.
+  standard_name: wind_speed
+  variable: wind_speed
+  period_type: daily
+  sync:
+    kind: temporal
+    execution: append
+  extents:
+    spatial:
+      bbox:
+      - -180
+      - -90
+      - 180
+      - 90
+    temporal:
+      begin: '1950-01-01'
+      resolution: P1D
+  ingestion:
+    plugin: open_geo_service_plugins.rasters.era5_land_daily_stats.ERA5LandCDSDailyWindSpeedPlugin
+    params: {}
+  units: m s-1
+  cell_methods: 'time: mean'
+  resolution: 9 km x 9 km
+  source: ERA5-Land Reanalysis
+  license:
+    name: Licence to Use Copernicus Products
+    url: https://apps.ecmwf.int/datasets/licences/copernicus/
+  providers:
+  - name: Copernicus Climate Change Service (C3S)
+    url: https://climate.copernicus.eu/
+  source_url: https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land
+  display:
+    colormap: viridis
+    range:
+    - 0.0
+    - 10.0

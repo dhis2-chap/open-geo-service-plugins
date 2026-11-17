@@ -1,45 +1,45 @@
-# ocs-plugins
+# open-geo-service-plugins
 
-Experimental dataset plugins and processes for the [Open Climate Service](https://github.com/dhis2/open-climate-service)
-(OCS), for testing.
+Experimental dataset plugins and processes for [Open Geo Service](https://github.com/dhis2/open-geo-service),
+for testing.
 
 > **Not for production.** Try these plugins and tell us what you find, but do not rely on them in
-> a production instance. They follow OCS `main` and can change or be removed without notice: a
+> a production instance. They follow Open Geo Service `main` and can change or be removed without notice: a
 > dataset's id, variable or grid may change between versions, so a store may need ingesting again.
 
-OCS core holds datasets every instance can rely on: actively maintained and updated upstream
+Open Geo Service core holds datasets every instance can rely on: actively maintained and updated upstream
 sources from open providers, used beyond one country. This repository is where other datasets are
 tried out: ones that are more specialised, read through commercial platforms, or near the end of
-their record. They install into any OCS instance as one package, and the ones that prove
+their record. They install into any Open Geo Service instance as one package, and the ones that prove
 themselves can move to core.
 
 ## Try the plugins in an instance
 
-The plugins are an installable OCS plugin package: once installed, OCS finds them through the
-`open_climate_service.plugins` entry point and lists their datasets under **Data sources**,
+The plugins are an installable Open Geo Service plugin package: once installed, Open Geo Service finds them through the
+`open_geo_service.plugins` entry point and lists their datasets under **Data sources**,
 next to the built-in ones. No `plugins_dir` change is needed.
 
-Run OCS from its `main` branch, as the plugins follow it; the release on PyPI is behind. In the
+Run Open Geo Service from its `main` branch, as the plugins follow it; the release on PyPI is behind. In the
 instance's `pyproject.toml`:
 
 ```toml
 [project]
 dependencies = [
-    "open-climate-service[server] @ git+https://github.com/dhis2/open-climate-service.git",
-    "ocs-plugins @ git+https://github.com/dhis2-chap/ocs-plugins.git",
+    "open-geo-service[server] @ git+https://github.com/dhis2/open-geo-service.git",
+    "open-geo-service-plugins @ git+https://github.com/dhis2-chap/open-geo-service-plugins.git",
 ]
 
 [tool.uv.sources]
-open-climate-service = { git = "https://github.com/dhis2/open-climate-service.git", branch = "main" }
-ocs-plugins = { git = "https://github.com/dhis2-chap/ocs-plugins.git", branch = "main" }
+open-geo-service = { git = "https://github.com/dhis2/open-geo-service.git", branch = "main" }
+open-geo-service-plugins = { git = "https://github.com/dhis2-chap/open-geo-service-plugins.git", branch = "main" }
 ```
 
-Keep the `override-dependencies` block from OCS's own `pyproject.toml` under `[tool.uv]` in the
-instance, as with any OCS instance. Then:
+Keep the `override-dependencies` block from Open Geo Service's own `pyproject.toml` under `[tool.uv]` in the
+instance, as with any Open Geo Service instance. Then:
 
 ```bash
 uv sync
-make run    # or: uv run uvicorn open_climate_service.main:app --port 9000
+make run    # or: uv run uvicorn open_geo_service.main:app --port 9000
 ```
 
 The datasets below now appear at `GET /data-sources` and on the Data sources page. Ingest one as
@@ -92,17 +92,17 @@ before publishing the layer anywhere public, and cite Chi, Fang, Chatterjee & Bl
 |---|---|---|
 | `aggregate_spatial_population_weighted` | openEO process | The population-weighted mean of a raster per feature and time step, `sum(value × population) / sum(population)`, with a population raster such as WorldPop as `weights` |
 | `remap_classes` | openEO process | Merges the classes of a categorical raster into named groups, and records the groups as its classes |
-| `esacci_landcover_groups` | workflow | ESA CCI land cover (OCS core's `esacci_landcover_class_yearly`) in ten groups: cropland, tree_cover, shrubland, grassland, sparse_vegetation, wetland, urban, bare, water and snow_ice |
+| `esacci_landcover_groups` | workflow | ESA CCI land cover (Open Geo Service core's `esacci_landcover_class_yearly`) in ten groups: cropland, tree_cover, shrubland, grassland, sparse_vegetation, wetland, urban, bare, water and snow_ice |
 
 A population-weighted mean gives the heat or rainfall where people live rather than averaged over
-empty land. It differs from OCS core's `aggregate_spatial_weighted`, which weights each cell by
+empty land. It differs from Open Geo Service core's `aggregate_spatial_weighted`, which weights each cell by
 how much of it the feature covers. Here a cell counts if its centre is inside the feature, so use
 a population raster much finer than the smallest feature: at 1 km, a small unit can have few or
 no cells. Cells with no data or no people are left out, and a feature with none left has no
 value rather than 0. The population is averaged to one surface if it has several years, and
 stays on its own grid: each population cell takes the climate value of the cell it lies in.
 
-Land cover groups go before OCS core's `aggregate_spatial_classes`, which then gives each
+Land cover groups go before Open Geo Service core's `aggregate_spatial_classes`, which then gives each
 group's share of each feature (`share`), the group covering most of it (`majority`), or a weight
 such as population per group (`total`), labelled with the group names:
 
@@ -170,27 +170,27 @@ original classes. A class in no group, and a missing cell, become missing.
 ## Develop
 
 ```bash
-uv sync               # installs OCS from its main branch, with the server stack
-uv run pytest         # unit tests, and a check that OCS discovers and can import every template
+uv sync               # installs Open Geo Service from its main branch, with the server stack
+uv run pytest         # unit tests, and a check that Open Geo Service discovers and can import every template
 uv run ruff check . && uv run ruff format --check .
 ```
 
-To try the plugins in a local instance, add a `climate-service.yaml` (see OCS's
-`climate-service.yaml.example`) and run `uv run uvicorn open_climate_service.main:app` from this
-repository: the package is installed in its own environment, so OCS discovers it.
+To try the plugins in a local instance, add a `geoservice.yaml` (see Open Geo Service's
+`geoservice.yaml.example`) and run `uv run uvicorn open_geo_service.main:app` from this
+repository: the package is installed in its own environment, so Open Geo Service discovers it.
 
-A new plugin goes in `ocs_plugins/rasters/` as a `BaseDatasetPlugin` module with its YAML
+A new plugin goes in `open_geo_service_plugins/rasters/` as a `BaseDatasetPlugin` module with its YAML
 template beside it, the template's `ingestion.plugin` naming the class by its full dotted path
-(`ocs_plugins.rasters.<module>.<Class>`). Each plugin should name its source, its licence and
-what access it needs. See OCS's [Adding custom datasets](https://github.com/dhis2/open-climate-service/blob/main/docs/adding_custom_datasets.md)
-and [Installable plugins](https://github.com/dhis2/open-climate-service/blob/main/docs/installable_plugins.md) guides.
-An openEO process goes in `ocs_plugins/processes/` as a `@process` function, and a workflow in
-`ocs_plugins/workflows/` as a process graph JSON file.
+(`open_geo_service_plugins.rasters.<module>.<Class>`). Each plugin should name its source, its licence and
+what access it needs. See Open Geo Service's [Adding custom datasets](https://github.com/dhis2/open-geo-service/blob/main/docs/adding_custom_datasets.md)
+and [Installable plugins](https://github.com/dhis2/open-geo-service/blob/main/docs/installable_plugins.md) guides.
+An openEO process goes in `open_geo_service_plugins/processes/` as a `@process` function, and a workflow in
+`open_geo_service_plugins/workflows/` as a process graph JSON file.
 
 ## Credits
 
 Most of the plugins were written by Knut Rand ([@knutdrand](https://github.com/knutdrand)) for a
-climate–health use case, first proposed for OCS core in dhis2/open-climate-service#459–#464.
+climate–health use case, first proposed for Open Geo Service core in dhis2/open-geo-service#459–#464.
 The Copernicus Land Monitoring Service GPP and NPP plugin is based on the ones written for the
 Uganda and Malawi climate service instances by Diana Nanyanzi and Yambanso. The population-weighted
 aggregation follows the DHIS2 Climate Tools [population weighting guide](https://climate-tools.dhis2.org/guides/aggregation/population-weighting/).

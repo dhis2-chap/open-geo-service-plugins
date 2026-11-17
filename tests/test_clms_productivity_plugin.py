@@ -14,7 +14,7 @@ import pytest
 import rasterio
 from rasterio.transform import from_origin
 
-from ocs_plugins.rasters import _clms, clms_productivity
+from open_geo_service_plugins.rasters import _clms, clms_productivity
 
 RES = 1 / 336
 HALF = RES / 2

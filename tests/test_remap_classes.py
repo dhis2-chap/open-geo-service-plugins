@@ -1,7 +1,7 @@
 """remap_classes merges a categorical raster's classes into groups that aggregate_spatial_classes reads.
 
 Grids are small and synthetic, unit cells from (0, 0) in WGS 84, so every share can be worked out
-by hand. The aggregation is OCS core's, unchanged: the groups reach it as the cube's CF flags.
+by hand. The aggregation is Open Geo Service core's, unchanged: the groups reach it as the cube's CF flags.
 """
 
 from __future__ import annotations
@@ -13,14 +13,15 @@ from typing import Any
 import numpy as np
 import pytest
 import xarray as xr
-from open_climate_service.data_registry.services import datasets as registry
-from open_climate_service.openeo import plugin_processes, workflows
-from open_climate_service.plugins.processes.aggregate_spatial_classes import aggregate_spatial_classes
-from open_climate_service.shared.classes import classification_from_template, cube_classes
+from open_geo_service.data_registry.services import datasets as registry
+from open_geo_service.openeo import plugin_processes, workflows
+from open_geo_service.plugins.processes.aggregate_spatial_classes import aggregate_spatial_classes
+from open_geo_service.shared.classes import classification_from_template, cube_classes
 
-from ocs_plugins.processes.remap_classes import remap_classes
+from open_geo_service_plugins.processes.remap_classes import remap_classes
 
-WORKFLOW = Path(__file__).resolve().parents[1] / "ocs_plugins" / "workflows" / "esacci_landcover_groups.json"
+WORKFLOWS = Path(__file__).resolve().parents[1] / "open_geo_service_plugins" / "workflows"
+WORKFLOW = WORKFLOWS / "esacci_landcover_groups.json"
 # Three forest classes and one cropland class, as ESA CCI codes, with their CF flags.
 CLASSES = {"flag_values": [10, 50, 60, 70], "flag_meanings": "Cropland Tree_a Tree_b Tree_c", "long_name": "LCCS"}
 GROUPS = {"cropland": [10], "tree cover": [50, 60, 70]}

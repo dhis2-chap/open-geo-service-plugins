@@ -11,7 +11,7 @@ import pystac_client
 import pytest
 import xarray as xr
 
-from ocs_plugins.rasters import modis_lst_monthly as lst
+from open_geo_service_plugins.rasters import modis_lst_monthly as lst
 
 
 def _item(product: str, start: str, end: str, tile: str = "h24v06") -> Any:

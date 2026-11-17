@@ -13,7 +13,7 @@ from typing import Any
 import numpy as np
 import pytest
 
-from ocs_plugins.rasters import rwi
+from open_geo_service_plugins.rasters import rwi
 
 _BASE = "https://data.humdata.org/dataset/rwi/resource"
 _FILES = ["npl", "ind_pak", "bosnia-and-herzegovina"]

@@ -12,7 +12,7 @@ import pytest
 from pyhdf.SD import SD, SDC
 from pyproj import Transformer
 
-from ocs_plugins.rasters import _modis, modis_landcover
+from open_geo_service_plugins.rasters import _modis, modis_landcover
 
 SIZE = 240  # pixels per tile side; real tiles have 2400, the reader takes it from the file
 V = 9

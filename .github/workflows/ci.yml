@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-  # Weekly against OCS main, so a change to the plugin contract shows up here.
+  # Weekly against Open Geo Service main, so a change to the plugin contract shows up here.
   schedule:
     - cron: "0 6 * * 1"
 
@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
       - name: Install
-        run: uv sync --upgrade-package open-climate-service
+        run: uv sync --upgrade-package open-geo-service
       - name: Lint
         run: uv run ruff check . && uv run ruff format --check .
       - name: Test
