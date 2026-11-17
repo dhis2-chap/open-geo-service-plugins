@@ -1,34 +1,34 @@
 [project]
-name = "ocs-plugins"
+name = "open-geo-service-plugins"
 version = "0.1.0"
-description = "Experimental dataset plugins for the Open Climate Service, for testing"
+description = "Experimental dataset plugins for the Open Geo Service, for testing"
 readme = "README.md"
 license = "BSD-3-Clause"
 license-files = ["LICENSE"]
 requires-python = ">=3.12"
-# Not pinned: the instance installing these plugins decides which OCS revision it runs.
-dependencies = ["open-climate-service", "boto3>=1.34", "earthengine-api>=1.0", "pyhdf>=0.11", "xee>=0.1.2,<0.2"]
+# Not pinned: the instance installing these plugins decides which Open Geo Service revision it runs.
+dependencies = ["open-geo-service", "boto3>=1.34", "earthengine-api>=1.0", "pyhdf>=0.11", "xee>=0.1.2,<0.2"]
 
 [project.urls]
-Repository = "https://github.com/dhis2-chap/ocs-plugins"
+Repository = "https://github.com/dhis2-chap/open-geo-service-plugins"
 
-[project.entry-points."open_climate_service.plugins"]
-ocs_plugins = "ocs_plugins"
+[project.entry-points."open_geo_service.plugins"]
+open_geo_service_plugins = "open_geo_service_plugins"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["ocs_plugins"]
+packages = ["open_geo_service_plugins"]
 
 [dependency-groups]
-# Development and CI test against OCS main with its server stack, which the plugins need.
-dev = ["open-climate-service[server]", "pytest>=8", "ruff>=0.6"]
+# Development and CI test against Open Geo Service main with its server stack, which the plugins need.
+dev = ["open-geo-service[server]", "pytest>=8", "ruff>=0.6"]
 
 [tool.uv]
-# The same overrides OCS itself declares: they relax stale upstream pins and are not inherited
-# by a project that depends on OCS. Keep in step with OCS main's pyproject.toml.
+# The same overrides Open Geo Service itself declares: they relax stale upstream pins and are not inherited
+# by a project that depends on Open Geo Service. Keep in step with Open Geo Service main's pyproject.toml.
 override-dependencies = [
     "geojson-pydantic>=2.1.0",
     "zarr>=3.1.6",
@@ -43,9 +43,9 @@ override-dependencies = [
 ]
 
 [tool.uv.sources]
-open-climate-service = { git = "https://github.com/dhis2/open-climate-service", branch = "main" }
+open-geo-service = { git = "https://github.com/dhis2/open-geo-service", branch = "main" }
 
-# The same rules as OCS core, so a plugin can move between the two unchanged.
+# The same rules as Open Geo Service core, so a plugin can move between the two unchanged.
 [tool.ruff]
 target-version = "py312"
 line-length = 120
@@ -61,7 +61,7 @@ convention = "google"
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["D"]
 "**/__init__.py" = ["D104"]
-"ocs_plugins/**/*.py" = ["D102", "D105", "D107"]
+"open_geo_service_plugins/**/*.py" = ["D102", "D105", "D107"]
 
 [tool.ruff.format]
 quote-style = "double"

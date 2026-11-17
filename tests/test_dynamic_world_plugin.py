@@ -15,7 +15,7 @@ import numpy as np
 import pytest
 import xarray as xr
 
-from ocs_plugins.rasters import dynamic_world
+from open_geo_service_plugins.rasters import dynamic_world
 
 
 class _Chain:

@@ -13,7 +13,7 @@ import numpy as np
 import pytest
 from pyhdf.SD import SD, SDC
 
-from ocs_plugins.rasters import _modis, modis_lst
+from open_geo_service_plugins.rasters import _modis, modis_lst
 
 SIZE = 120  # pixels per tile side; real tiles have 1200
 V = 9

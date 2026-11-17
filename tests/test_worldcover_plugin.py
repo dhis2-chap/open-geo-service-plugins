@@ -14,7 +14,7 @@ import pytest
 import rasterio
 from rasterio.transform import from_origin
 
-from ocs_plugins.rasters import worldcover
+from open_geo_service_plugins.rasters import worldcover
 
 PER_DEGREE = 120  # the real grid is 12000 per degree
 

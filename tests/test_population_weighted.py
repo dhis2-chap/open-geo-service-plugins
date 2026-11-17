@@ -1,4 +1,4 @@
-"""The population-weighted aggregation process reaches OCS through the entry point and weights by population."""
+"""The population-weighted process reaches Open Geo Service through the entry point and weights by population."""
 
 from __future__ import annotations
 
@@ -6,9 +6,11 @@ import math
 
 import numpy as np
 import xarray as xr
-from open_climate_service.openeo import plugin_processes
+from open_geo_service.openeo import plugin_processes
 
-from ocs_plugins.processes.aggregate_spatial_population_weighted import aggregate_spatial_population_weighted
+from open_geo_service_plugins.processes.aggregate_spatial_population_weighted import (
+    aggregate_spatial_population_weighted,
+)
 
 # A 2x2 grid of 1-degree cells, its centres at x 0.5 and 1.5, y 1.5 and 0.5 (north up).
 X = [0.5, 1.5]

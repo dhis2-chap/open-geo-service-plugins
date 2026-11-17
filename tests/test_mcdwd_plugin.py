@@ -6,7 +6,7 @@ from typing import Any
 
 import pytest
 
-from ocs_plugins.rasters import mcdwd
+from open_geo_service_plugins.rasters import mcdwd
 
 
 def test_a_composite_starting_the_day_before_is_not_offered(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -18,6 +18,6 @@ def test_a_composite_starting_the_day_before_is_not_offered(monkeypatch: pytest.
         return [{"time_start": f"{before}T00:00:00Z"}, {"time_start": f"{day}T00:00:00Z"}]
 
     monkeypatch.setattr(mcdwd.MCDWDFloodDailyPlugin, "_granules", granules)
-    monkeypatch.setattr("open_climate_service.extents.services.get_extent", lambda: None)
+    monkeypatch.setattr("open_geo_service.extents.services.get_extent", lambda: None)
 
     assert asyncio.run(mcdwd.MCDWDFloodDailyPlugin().periods(str(day), str(day))) == [str(day)]
